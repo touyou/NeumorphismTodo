@@ -1,6 +1,6 @@
 package com.teamlab.fujiiyosuke.Todo.Controller;
 
-import com.teamlab.fujiiyosuke.Todo.Model.Todo;
+import com.teamlab.fujiiyosuke.Todo.Entity.Todo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +10,7 @@ public class TodoController {
 
     @GetMapping("/")
     public String top(Model model) {
-        model.addAttribute("list", Todo.emptyList);
+        model.addAttribute("list", Todo.demoList);
         return "top";
     }
 

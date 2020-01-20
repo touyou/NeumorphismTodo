@@ -1,4 +1,4 @@
-package com.teamlab.fujiiyosuke.Todo.Model;
+package com.teamlab.fujiiyosuke.Todo.Entity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
