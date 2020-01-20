@@ -1,11 +1,19 @@
 package com.teamlab.fujiiyosuke.Todo.Entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class Todo {
+@Entity
+public class TodoEntity {
+
+    @Id @GeneratedValue
+    private Long id;
+
     private String name;
     private String createDate;
     private String limitDate;
@@ -13,14 +21,14 @@ public class Todo {
 
     private SimpleDateFormat formatter;
 
-    public static List<Todo> demoList = List.of(
-            new Todo("ToDoの表示", new Date()),
-            new Todo("ToDoの編集", new Date()),
-            new Todo("Todoの検索", new Date())
+    public static List<TodoEntity> demoList = List.of(
+            new TodoEntity("ToDoの表示", new Date()),
+            new TodoEntity("ToDoの編集", new Date()),
+            new TodoEntity("Todoの検索", new Date())
     );
-    public static List<Todo> emptyList = List.of();
+    public static List<TodoEntity> emptyList = List.of();
 
-    public Todo(String name, Date limitDate) {
+    public TodoEntity(String name, Date limitDate) {
         this.name = name;
         this.formatter = new SimpleDateFormat("yyyy年MM月dd日");
         this.createDate = formatter.format(new Date());
