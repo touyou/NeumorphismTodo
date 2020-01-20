@@ -1,9 +1,7 @@
 package com.teamlab.fujiiyosuke.Todo.Entity;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "todo")
@@ -19,17 +17,17 @@ public class TodoEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
-    @Column(name = "limit_at")
+    @Column(name = "deadline_at")
     @Temporal(TemporalType.DATE)
-    private Date limitDate;
+    private Date deadlineDate;
 
     @Column(name = "is_done")
     private Boolean isDone;
 
-    public TodoEntity(String name, Date limitDate) {
+    public TodoEntity(String name, Date deadlineDate) {
         this.name = name;
         this.createDate = new Date();
-        this.limitDate = limitDate;
+        this.deadlineDate = deadlineDate;
         this.isDone = false;
     }
 
@@ -41,7 +39,7 @@ public class TodoEntity {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", createDate='" + createDate + '\'' +
-                ", limitDate='" + limitDate + '\'' +
+                ", limitDate='" + deadlineDate + '\'' +
                 ", isDone=" + isDone +
                 '}';
     }
@@ -61,11 +59,11 @@ public class TodoEntity {
         this.createDate = createDate;
     }
 
-    public Date getLimitDate() {
-        return limitDate;
+    public Date getDeadlineDate() {
+        return deadlineDate;
     }
-    public void setLimitDate(Date limitDate) {
-        this.limitDate = limitDate;
+    public void setDeadlineDate(Date deadlineDate) {
+        this.deadlineDate = deadlineDate;
     }
 
     public Boolean getDone() {
