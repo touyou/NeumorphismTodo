@@ -5,10 +5,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class TopController {
+public class EditController {
 
-    @GetMapping("/top")
-    public String top(Model model) {
-        return "top";
+    @GetMapping("/edit")
+    public String edit(Model model) {
+        return "edit";
     }
 }
