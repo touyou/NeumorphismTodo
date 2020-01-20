@@ -36,6 +36,17 @@ public class TodoEntity {
         this.isDone = false;
     }
 
+    @Override
+    public String toString() {
+        return "TodoEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", createDate='" + createDate + '\'' +
+                ", limitDate='" + limitDate + '\'' +
+                ", isDone=" + isDone +
+                '}';
+    }
+
     // getter
     public String getName() {
         return name;
@@ -45,36 +56,11 @@ public class TodoEntity {
         return createDate;
     }
 
-    public Date getCreateDateAsDate() throws ParseException {
-        return formatter.parse(createDate);
-    }
-
     public String getLimitDate() {
         return limitDate;
     }
 
-    public Date getLimitDateAsDate() throws ParseException {
-        return formatter.parse(limitDate);
-    }
-
     public Boolean getDone() {
         return isDone;
-    }
-
-    // setter
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = formatter.format(createDate);
-    }
-
-    public void setLimitDate(Date limitDate) {
-        this.limitDate = formatter.format(limitDate);
-    }
-
-    public void setDone(Boolean done) {
-        isDone = done;
     }
 }

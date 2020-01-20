@@ -1,12 +1,17 @@
 package com.teamlab.fujiiyosuke.Todo.Controller;
 
 import com.teamlab.fujiiyosuke.Todo.Entity.TodoEntity;
+import com.teamlab.fujiiyosuke.Todo.Repository.TodoEntityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class TodoController {
+
+    @Autowired
+    private TodoEntityRepository repository;
 
     @GetMapping("/")
     public String top(Model model) {
