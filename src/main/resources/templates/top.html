@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo | Top</title>
+</head>
+<body>
+    <header>
+        <h1>TODOリスト</h1>
+        <p><a href="">検索</a></p>
+    </header>
+    <section>
+        <div class="card">
+            <h1>新しいToDoを作成する。</h1>
+            <div class="content">
+                <form method="post">
+                    <p>TODO名: <input type="text" name="name" /></p>
+                    <p>期限: <input type="date" name="date" /></p>
+                    <input type="submit" value="ToDoの追加" />
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
