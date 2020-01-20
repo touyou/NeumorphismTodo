@@ -24,5 +24,17 @@
             </div>
         </div>
     </section>
+    <main>
+        <th:block th:if="${!list.isEmpty()}">
+            <div class="card" th:each="todo : ${list}">
+                <p>[[${todo.name}]]</p>
+                <p>期限: [[${todo.limitDate}]]</p>
+                <p>作成日: [[${todo.createDate}]]</p>
+            </div>
+        </th:block>
+        <th:block th:if="${list.isEmpty()}">
+            <span class="error">登録されたTODOはございません。</span>
+        </th:block>
+    </main>
 </body>
 </html>
