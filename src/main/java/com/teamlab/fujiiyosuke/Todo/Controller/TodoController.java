@@ -7,6 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Controller
 public class TodoController {
 
@@ -15,7 +18,8 @@ public class TodoController {
 
     @GetMapping("/")
     public String top(Model model) {
-        model.addAttribute("list", TodoEntity.demoList);
+        model.addAttribute("formatter", new SimpleDateFormat("yyyy年MM月dd日"));
+        model.addAttribute("list", repository.findAll());
         return "top";
     }
 

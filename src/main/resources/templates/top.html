@@ -28,8 +28,8 @@
         <th:block th:if="${!list.isEmpty()}">
             <div class="card" th:each="todo : ${list}">
                 <p>[[${todo.name}]]</p>
-                <p>期限: [[${todo.limitDate}]]</p>
-                <p>作成日: [[${todo.createDate}]]</p>
+                <p>期限: [[${formatter.format(todo.limitDate)}]]</p>
+                <p>作成日: [[${formatter.format(todo.createDate)}]]</p>
             </div>
         </th:block>
         <th:block th:if="${list.isEmpty()}">

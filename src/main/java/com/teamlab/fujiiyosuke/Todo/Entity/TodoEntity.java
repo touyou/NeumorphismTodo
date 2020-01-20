@@ -1,40 +1,39 @@
 package com.teamlab.fujiiyosuke.Todo.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.text.ParseException;
+import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "todo")
 public class TodoEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-    private String createDate;
-    private String limitDate;
+
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
+
+    @Column(name = "limit_at")
+    @Temporal(TemporalType.DATE)
+    private Date limitDate;
+
+    @Column(name = "is_done")
     private Boolean isDone;
-
-    private SimpleDateFormat formatter;
-
-    public static List<TodoEntity> demoList = List.of(
-            new TodoEntity("ToDoの表示", new Date()),
-            new TodoEntity("ToDoの編集", new Date()),
-            new TodoEntity("Todoの検索", new Date())
-    );
-    public static List<TodoEntity> emptyList = List.of();
 
     public TodoEntity(String name, Date limitDate) {
         this.name = name;
-        this.formatter = new SimpleDateFormat("yyyy年MM月dd日");
-        this.createDate = formatter.format(new Date());
-        this.limitDate = formatter.format(limitDate);
+        this.createDate = new Date();
+        this.limitDate = limitDate;
         this.isDone = false;
     }
+
+    private TodoEntity() {}
 
     @Override
     public String toString() {
@@ -47,20 +46,32 @@ public class TodoEntity {
                 '}';
     }
 
-    // getter
+    // getter/setter
     public String getName() {
         return name;
     }
-
-    public String getCreateDate() {
-        return createDate;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLimitDate() {
+    public Date getCreateDate() {
+        return createDate;
+    }
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getLimitDate() {
         return limitDate;
+    }
+    public void setLimitDate(Date limitDate) {
+        this.limitDate = limitDate;
     }
 
     public Boolean getDone() {
         return isDone;
+    }
+    public void setDone(Boolean done) {
+        isDone = done;
     }
 }
