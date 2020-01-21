@@ -33,17 +33,6 @@ public class Todo {
 
     private Todo() {}
 
-    @Override
-    public String toString() {
-        return "TodoEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", createDate='" + createDate + '\'' +
-                ", limitDate='" + deadlineDate + '\'' +
-                ", isDone=" + isDone +
-                '}';
-    }
-
     // getter/setter
     public String getName() {
         return name;
