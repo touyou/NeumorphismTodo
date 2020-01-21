@@ -13,7 +13,7 @@ import java.util.Optional;
 @Transactional
 public class TodoService {
     @Autowired
-    TodoRepository todoRepository;
+    private TodoRepository todoRepository;
 
     public List<Todo> findAll() {
         return todoRepository.findAll();
