@@ -15,7 +15,8 @@
 
 ### memo: テストデータの作成
 
-0. 起動する
+0. `$ mysql.server start`でmysqlを起動
+0. アプリを起動する
 0. `$ mysql -uroot`でmysql入る
 0. `> use tododb;`でデータベース`tododb`に。
 0. `> show tables;`で`todo`という名前のテーブルができていることを確認。
@@ -25,3 +26,4 @@
 
 - `> select * from todo;`
 - `> delete from todo;`
+- `$ mysql.server stop`
