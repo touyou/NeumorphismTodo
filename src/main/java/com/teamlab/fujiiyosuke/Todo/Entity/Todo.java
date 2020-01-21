@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "todo")
-public class TodoEntity {
+public class Todo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,14 +24,14 @@ public class TodoEntity {
     @Column(name = "is_done")
     private Boolean isDone;
 
-    public TodoEntity(String name, Date deadlineDate) {
+    public Todo(String name, Date deadlineDate) {
         this.name = name;
         this.createDate = new Date();
         this.deadlineDate = deadlineDate;
         this.isDone = false;
     }
 
-    private TodoEntity() {}
+    private Todo() {}
 
     @Override
     public String toString() {
