@@ -24,8 +24,8 @@ public class TodoService {
     }
 
     public Optional<Todo> findByName(String name) {
-        List<Todo> todos = findAll();
-        return todos.stream().filter(t -> t.getName().equals(name)).findFirst();
+        List<Todo> todos = todoRepository.findByName(name);
+        return todos.stream().findFirst();
     }
 
     public Todo create(Todo todo) {
