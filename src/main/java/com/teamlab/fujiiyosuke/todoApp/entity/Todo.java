@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * TodoのEntityクラス
+ * @author fujii
+ */
 @Entity
 @Table(name = "todo")
 @Data

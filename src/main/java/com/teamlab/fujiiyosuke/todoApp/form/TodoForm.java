@@ -8,6 +8,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
+/**
+ * TodoのForm用Beans
+ * @author fujii
+ */
 @Data
 public class TodoForm {
     @NotBlank

@@ -16,12 +16,22 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
 
+/**
+ * TodoのControllerクラス
+ * @author fujii
+ */
 @Controller
 public class TodoController {
 
     @Autowired
     private TodoService todoService;
 
+    /**
+     * Index page
+     * @param form 空のフォームデータもしくはエラー時の元の入力値が入る
+     * @param mav ModelAndView
+     * @return 設定済のModelAndView
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index(@ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
         mav.setViewName("top");
@@ -30,6 +40,13 @@ public class TodoController {
         return mav;
     }
 
+    /**
+     * Add request
+     * @param form バリデーションを含めたフォームデータ
+     * @param result バリデーション結果
+     * @param mav ModelAndView
+     * @return 加工済のModelAndView
+     */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ModelAndView add(@ModelAttribute("todoForm")@Validated TodoForm form, BindingResult result, ModelAndView mav) {
         todoService.findByName(form.getName()).ifPresent(t -> {
@@ -43,11 +60,21 @@ public class TodoController {
         return new ModelAndView("redirect:/");
     }
 
+    /**
+     * Edit page
+     * @param model リクエストパラメータ
+     * @return viewのパス
+     */
     @GetMapping("/edit")
     public String edit(Model model) {
         return "edit";
     }
 
+    /**
+     * Search page
+     * @param model リクエストパラメータ
+     * @return viewのパス
+     */
     @GetMapping("/search")
     public String search(Model model) {
         return "search";
