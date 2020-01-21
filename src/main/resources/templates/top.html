@@ -16,9 +16,12 @@
         <div class="card">
             <h1>新しいTODOを作成する。</h1>
             <div class="content">
-                <form method="post" action="/add" th:object="${todoForm}">
-                    <p>TODO名: <input type="text" name="name" /></p>
-                    <p>期限: <input type="date" name="deadline" /></p>
+                <form method="post" th:action="@{/add}" th:object="${todoForm}">
+                    <ul>
+                        <li th:each="e : ${#fields.detailedErrors()}" th:text="${e.message}" style="color: red;" />
+                    </ul>
+                    <p>TODO名: <input type="text" th:field="*{name}" th:errorclass="fieldError" /></p>
+                    <p>期限: <input type="date" th:field="*{deadline}" /></p>
                     <input type="submit" value="TODOの追加" />
                 </form>
             </div>

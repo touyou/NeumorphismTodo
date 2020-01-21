@@ -1,6 +1,5 @@
 package com.teamlab.fujiiyosuke.Todo.Controller;
 
-import com.teamlab.fujiiyosuke.Todo.Repository.TodoRepository;
 import com.teamlab.fujiiyosuke.Todo.Service.TodoService;
 import com.teamlab.fujiiyosuke.Todo.Entity.TodoEntity;
 import com.teamlab.fujiiyosuke.Todo.Form.TodoForm;
@@ -8,14 +7,19 @@ import com.teamlab.fujiiyosuke.Todo.Repository.TodoEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class TodoController {
@@ -23,19 +27,22 @@ public class TodoController {
     @Autowired
     private TodoService todoService;
 
-    @GetMapping("/")
-    public String top(Model model) {
-        model.addAttribute("formatter", new SimpleDateFormat("yyyy年MM月dd日"));
-        model.addAttribute("list", todoService.findAll());
-        return "top";
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView index(@ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
+        mav.setViewName("top");
+        mav.addObject("formatter", new SimpleDateFormat("yyyy年MM月dd日"));
+        mav.addObject("list", todoService.findAll());
+        return mav;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addTodo(@ModelAttribute("todoForm")TodoForm form, Model model, RedirectAttributes redirectAttributes) {
-        // todo: add validation
+    public ModelAndView add(@ModelAttribute("todoForm")@Validated TodoForm form, BindingResult result, ModelAndView mav) {
+        if (result.hasErrors()) {
+            return index(form, mav);
+        }
         TodoEntity newTodo = new TodoEntity(form.getName(), form.getDeadline());
-        repository.save(newTodo);
-        return "redirect:/";
+        todoService.save(newTodo);
+        return new ModelAndView("redirect:/");
     }
 
     @GetMapping("/edit")
