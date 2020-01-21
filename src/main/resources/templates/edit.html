@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo | Edit</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:100,300,400,500,700,900&display=swap&subset=japanese" rel="stylesheet">
+    <link href="ress.css" rel="stylesheet" type="text/css">
+    <link href="common.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<header>
+    <h1><a href="/">TODOリスト</a></h1>
+    <p><a href="/search">検索</a></p>
+</header>
+<section>
+    <div class="card">
+        <h1>TODOの内容を変更します</h1>
+        <div class="content">
+            <form method="post">
+                <p>TODO名: <input type="text" name="name" /></p>
+                <p>期限: <input type="date" name="date" /></p>
+                <input type="submit" value="更新" />
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>
