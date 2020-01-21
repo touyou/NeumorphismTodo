@@ -32,6 +32,9 @@ public class TodoController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ModelAndView add(@ModelAttribute("todoForm")@Validated TodoForm form, BindingResult result, ModelAndView mav) {
+        todoService.findByName(form.getName()).ifPresent(t -> {
+            result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
+        });
         if (result.hasErrors()) {
             return index(form, mav);
         }

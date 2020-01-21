@@ -23,11 +23,20 @@ public class TodoService {
         return todoRepository.findById(id);
     }
 
+    public Optional<Todo> findByName(String name) {
+        List<Todo> todos = findAll();
+        return todos.stream().filter(t -> t.getName().equals(name)).findFirst();
+    }
+
     public Todo create(Todo todo) {
         return todoRepository.save(todo);
     }
 
     public void deleteById(Long id) {
         todoRepository.deleteById(id);
+    }
+
+    public void deleteAll() {
+        todoRepository.deleteAll();
     }
 }
