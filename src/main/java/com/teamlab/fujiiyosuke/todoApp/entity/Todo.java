@@ -1,4 +1,4 @@
-package com.teamlab.fujiiyosuke.Todo.entity;
+package com.teamlab.fujiiyosuke.todoApp.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

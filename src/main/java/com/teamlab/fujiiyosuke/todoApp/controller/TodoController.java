@@ -1,8 +1,8 @@
-package com.teamlab.fujiiyosuke.Todo.controller;
+package com.teamlab.fujiiyosuke.todoApp.controller;
 
-import com.teamlab.fujiiyosuke.Todo.entity.Todo;
-import com.teamlab.fujiiyosuke.Todo.form.TodoForm;
-import com.teamlab.fujiiyosuke.Todo.service.TodoService;
+import com.teamlab.fujiiyosuke.todoApp.entity.Todo;
+import com.teamlab.fujiiyosuke.todoApp.form.TodoForm;
+import com.teamlab.fujiiyosuke.todoApp.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
