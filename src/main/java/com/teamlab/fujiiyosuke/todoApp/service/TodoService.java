@@ -50,11 +50,30 @@ public class TodoService {
     }
 
     /**
+     * 名前が一緒かつIDの異なるものの検索
+     * @param name Todo名
+     * @param id ID
+     * @return Todo名が同じで違うデータ
+     */
+    public List<Todo> findByNameNotId(String name, Long id) {
+        return todoRepository.findByNameNotId(name, id);
+    }
+
+    /**
      * create new data
      * @param todo 新しいTodoインスタンス
      * @return 保存結果のTodo(disposable)
      */
     public Todo create(Todo todo) {
+        return todoRepository.save(todo);
+    }
+
+    /**
+     * update todo
+     * @param todo 更新されたTodoインスタンス
+     * @return 保存結果のTodo(disposable)
+     */
+    public Todo update(Todo todo) {
         return todoRepository.save(todo);
     }
 

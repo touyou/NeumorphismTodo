@@ -26,4 +26,13 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
      */
     @Query("select count(d) from Todo d where d.name = :NAME")
     public int countByName(@Param("NAME")String name);
+
+    /**
+     * findByNameNotId Query
+     * @param name 検索する名前
+     * @param id 除外するID
+     * @return 検索結果
+     */
+    @Query("select d from Todo d where d.name = :NAME and d.id <> :ID")
+    public List<Todo> findByNameNotId(@Param("NAME")String name, @Param("ID")Long id);
 }
