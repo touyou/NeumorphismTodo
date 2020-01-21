@@ -1,12 +1,16 @@
 package com.teamlab.fujiiyosuke.Todo.Entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "todo")
+@Data
+@NoArgsConstructor
 public class Todo {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,43 +26,12 @@ public class Todo {
     private Date deadlineDate;
 
     @Column(name = "is_done")
-    private Boolean isDone;
+    private Boolean done;
 
     public Todo(String name, Date deadlineDate) {
         this.name = name;
         this.createDate = new Date();
         this.deadlineDate = deadlineDate;
-        this.isDone = false;
-    }
-
-    private Todo() {}
-
-    // getter/setter
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getDeadlineDate() {
-        return deadlineDate;
-    }
-    public void setDeadlineDate(Date deadlineDate) {
-        this.deadlineDate = deadlineDate;
-    }
-
-    public Boolean getDone() {
-        return isDone;
-    }
-    public void setDone(Boolean done) {
-        isDone = done;
+        this.done = false;
     }
 }
