@@ -27,6 +27,10 @@ public class TodoService {
         return todoRepository.findAll();
     }
 
+    public List<Todo> findAllOrderByCreateDate() {
+        return todoRepository.findAllOrderByCreateDate();
+    }
+
     /**
      * find data by id
      * @param id Todoのid

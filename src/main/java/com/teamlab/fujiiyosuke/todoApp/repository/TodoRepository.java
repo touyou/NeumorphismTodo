@@ -13,6 +13,13 @@ import java.util.List;
  */
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     /**
+     * findAll order by createDate
+     * @return createDateでソートされたデータ
+     */
+    @Query("select d from Todo d order by d.createDate desc")
+    public List<Todo> findAllOrderByCreateDate();
+
+    /**
      * findByName Query
      * @param name 検索する名前
      * @return 検索結果

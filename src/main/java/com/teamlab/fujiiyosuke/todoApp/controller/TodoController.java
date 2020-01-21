@@ -36,7 +36,7 @@ public class TodoController {
     public ModelAndView index(@ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
         mav.setViewName("top");
         mav.addObject("formatter", new SimpleDateFormat("yyyy年MM月dd日"));
-        mav.addObject("list", todoService.findAll());
+        mav.addObject("list", todoService.findAllOrderByCreateDate());
         return mav;
     }
 
