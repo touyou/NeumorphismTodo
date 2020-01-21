@@ -1,9 +1,9 @@
 package com.teamlab.fujiiyosuke.Todo.Controller;
 
 import com.teamlab.fujiiyosuke.Todo.Service.TodoService;
-import com.teamlab.fujiiyosuke.Todo.Entity.TodoEntity;
+import com.teamlab.fujiiyosuke.Todo.Entity.Todo;
 import com.teamlab.fujiiyosuke.Todo.Form.TodoForm;
-import com.teamlab.fujiiyosuke.Todo.Repository.TodoEntityRepository;
+import com.teamlab.fujiiyosuke.Todo.Repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,8 +40,8 @@ public class TodoController {
         if (result.hasErrors()) {
             return index(form, mav);
         }
-        TodoEntity newTodo = new TodoEntity(form.getName(), form.getDeadline());
-        todoService.save(newTodo);
+        Todo newTodo = new Todo(form.getName(), form.getDeadline());
+        todoService.create(newTodo);
         return new ModelAndView("redirect:/");
     }
 
