@@ -1,4 +1,4 @@
-package com.teamlab.fujiiyosuke.Todo.Form;
+package com.teamlab.fujiiyosuke.Todo.form;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;

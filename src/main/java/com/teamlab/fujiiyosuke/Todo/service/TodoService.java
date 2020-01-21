@@ -1,7 +1,7 @@
-package com.teamlab.fujiiyosuke.Todo.Service;
+package com.teamlab.fujiiyosuke.Todo.service;
 
-import com.teamlab.fujiiyosuke.Todo.Entity.Todo;
-import com.teamlab.fujiiyosuke.Todo.Repository.TodoRepository;
+import com.teamlab.fujiiyosuke.Todo.entity.Todo;
+import com.teamlab.fujiiyosuke.Todo.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
