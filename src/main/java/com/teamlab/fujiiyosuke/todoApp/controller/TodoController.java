@@ -68,7 +68,7 @@ public class TodoController {
      * @return
      */
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView edit(@ModelAttribute("todoForm")TodoForm form, @PathVariable Long id, ModelAndView mav) {
+    public ModelAndView edit(@PathVariable Long id, @ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
         mav.setViewName("edit");
         Optional<Todo> optionalTodo = todoService.findById(id);
         optionalTodo.ifPresent(todo -> {
@@ -87,22 +87,22 @@ public class TodoController {
      * @param mav
      * @return
      */
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    @PostMapping("/edit/{id}")
     @Transactional(readOnly = false)
-    public ModelAndView update(@ModelAttribute("todoFom")@Validated TodoForm form, BindingResult result, @PathVariable("id")Long id, ModelAndView mav) {
+    public ModelAndView update(@PathVariable Long id, @ModelAttribute("todoFom")@Validated TodoForm form, BindingResult result, ModelAndView mav) {
         List<Todo> todos = todoService.findByNameNotId(form.getName(), id);
         if (!todos.isEmpty()) {
             result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
         }
         if (result.hasErrors()) {
-            return edit(form, id, mav);
+            // todo: back to edit and show validation result
+//            return edit(id, form, mav);
+            return new ModelAndView("redirect:/");
         }
-        System.out.println(result);
         Todo todo = todoService.findById(id).get();
         todo.setName(form.getName());
         todo.setDeadlineDate(form.getDeadline());
         todoService.update(todo);
-        System.out.println(todo);
         return new ModelAndView("redirect:/");
     }
 

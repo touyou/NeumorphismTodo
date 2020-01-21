@@ -16,7 +16,7 @@
     <div class="card">
         <h1>TODOの内容を変更します</h1>
         <div class="content">
-            <form method="post" th:action="@{/edit/{id}(id=${id})}" th:object="${todoForm}">
+            <form th:action="@{/edit/{id}(id=${id})}" th:method="put" th:object="${todoForm}">
                 <ul>
                     <li style="color: red;" th:each="e : ${#fields.detailedErrors()}" th:text="${e.message}" />
                 </ul>
