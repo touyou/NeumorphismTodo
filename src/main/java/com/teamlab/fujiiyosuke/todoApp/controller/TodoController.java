@@ -9,7 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
@@ -32,7 +35,7 @@ public class TodoController {
      * @param mav ModelAndView
      * @return 設定済のModelAndView
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping("/")
     public ModelAndView index(@ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
         mav.setViewName("top");
         mav.addObject("formatter", new SimpleDateFormat("yyyy年MM月dd日"));
@@ -47,7 +50,8 @@ public class TodoController {
      * @param mav ModelAndView
      * @return 加工済のModelAndView
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @PostMapping("/add")
+    @Transactional(readOnly = false)
     public ModelAndView add(@ModelAttribute("todoForm")@Validated TodoForm form, BindingResult result, ModelAndView mav) {
         if (todoService.countByName(form.getName()) > 0) {
             result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
@@ -62,12 +66,12 @@ public class TodoController {
 
     /**
      * Edit View
-     * @param form
-     * @param id
-     * @param mav
-     * @return
+     * @param id path id
+     * @param form 空のフォーム
+     * @param mav ModelAndView
+     * @return 設定済みのModelAndView
      */
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable Long id, @ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
         mav.setViewName("edit");
         Optional<Todo> optionalTodo = todoService.findById(id);
@@ -81,11 +85,11 @@ public class TodoController {
 
     /**
      * Update request
-     * @param form
-     * @param result
-     * @param id
-     * @param mav
-     * @return
+     * @param id path id
+     * @param form フォームのデータ
+     * @param result バリデーションの結果
+     * @param mav ModelAndView
+     * @return 設定済みのModelAndView
      */
     @PostMapping("/edit/{id}")
     @Transactional(readOnly = false)
