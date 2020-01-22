@@ -28,6 +28,10 @@ public class DeadlineValidator implements ConstraintValidator<Deadline, Date> {
      */
     @Override
     public boolean isValid(Date date, ConstraintValidatorContext context) {
+        if (date == null) {
+            // nullの場合はNotNullで判定したいため、こちらのバリデーションは通す
+            return true;
+        }
         Date now = DateUtils.createToday(TimeZone.getDefault()).getTime();
         return date.after(now) || date.equals(now);
     }

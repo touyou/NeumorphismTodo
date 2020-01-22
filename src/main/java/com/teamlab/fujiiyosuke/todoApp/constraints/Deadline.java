@@ -5,7 +5,6 @@ import com.teamlab.fujiiyosuke.todoApp.validation.DeadlineValidator;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.ReportAsSingleViolation;
-import javax.validation.constraints.NotNull;
 import java.lang.annotation.*;
 
 /**
@@ -17,7 +16,6 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = {DeadlineValidator.class})
 @ReportAsSingleViolation
-@NotNull
 public @interface Deadline {
     String message() default "{com.teamlab.fujiiyosuke.validator.constraints.Deadline.message}";
 
