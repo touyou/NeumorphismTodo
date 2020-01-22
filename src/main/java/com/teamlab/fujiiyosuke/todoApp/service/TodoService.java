@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,9 @@ public class TodoService {
      * @return 検索結果
      */
     public List<Todo> findByPartOfName(String name) {
+        if (name == null) {
+            return new ArrayList<Todo>();
+        }
         return todoRepository.findByPartOfName(sqlEscape(name));
     }
 
