@@ -1,5 +1,6 @@
 package com.teamlab.fujiiyosuke.todoApp.controller;
 
+import com.teamlab.fujiiyosuke.todoApp.entity.Todo;
 import com.teamlab.fujiiyosuke.todoApp.form.TodoForm;
 import com.teamlab.fujiiyosuke.todoApp.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 
 /**
  * TodoのControllerクラス
