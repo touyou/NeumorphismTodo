@@ -20,10 +20,10 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     public List<Todo> findAllOrderByCreateDate();
 
     /**
-     * findByName Query
+     * countByName Query
      * @param name 検索する名前
-     * @return 検索結果
+     * @return 該当数
      */
-    @Query("select d from Todo d where d.name = :NAME")
-    public List<Todo> findByName(@Param("NAME")String name);
+    @Query("select count(d) from Todo d where d.name = :NAME")
+    public int countByName(@Param("NAME")String name);
 }

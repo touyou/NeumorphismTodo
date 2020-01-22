@@ -41,13 +41,12 @@ public class TodoService {
     }
 
     /**
-     * find data by name
+     * count data by name
      * @param name Todo名
-     * @return Todo名が同じデータ
+     * @return Todo名が同じデータの数
      */
-    public Optional<Todo> findByName(String name) {
-        List<Todo> todos = todoRepository.findByName(name);
-        return todos.stream().findFirst();
+    public int countByName(String name) {
+        return todoRepository.countByName(name);
     }
 
     /**
