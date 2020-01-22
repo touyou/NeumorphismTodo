@@ -118,4 +118,19 @@ public class TodoController {
     public String search(Model model) {
         return "search";
     }
+
+    /**
+     * HTML用のエスケープ処理
+     * @param word 元の文字列
+     * @return result
+     */
+    private String escape(String word) {
+        return word
+                .replace("&", "&amp;")
+                .replace("\"", "&quot;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("'", "&#39;")
+                .replace(" ", "&nbsp;");
+    }
 }
