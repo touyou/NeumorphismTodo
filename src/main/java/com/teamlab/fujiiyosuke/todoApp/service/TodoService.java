@@ -158,7 +158,7 @@ public class TodoService {
      */
     private String sqlEscape(String word) {
         return escape(word)
-                .replace("%", "\\%")
-                .replace("_", "\\_");
+                .replace("%", "~%")
+                .replace("_", "~_");
     }
 }
