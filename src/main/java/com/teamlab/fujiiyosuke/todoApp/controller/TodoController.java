@@ -1,7 +1,5 @@
 package com.teamlab.fujiiyosuke.todoApp.controller;
 
-import com.teamlab.fujiiyosuke.todoApp.entity.Todo;
-import com.teamlab.fujiiyosuke.todoApp.exception.TodoNotFoundException;
 import com.teamlab.fujiiyosuke.todoApp.form.SearchForm;
 import com.teamlab.fujiiyosuke.todoApp.form.TodoForm;
 import com.teamlab.fujiiyosuke.todoApp.service.TodoService;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
-import java.util.Optional;
 
 /**
  * TodoのControllerクラス
@@ -81,13 +78,7 @@ public class TodoController {
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable Long id, @ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
         mav.setViewName("edit");
-        Optional<Todo> todo = todoService.findById(id);
-        todo.ifPresentOrElse(t -> {
-            form.setName(t.getName());
-            form.setDeadline(t.getDeadlineDate());
-        }, () -> {
-            throw new TodoNotFoundException();
-        });
+        todoService.setEditForm(id, form);
         mav.addObject("id", id);
         return mav;
     }
