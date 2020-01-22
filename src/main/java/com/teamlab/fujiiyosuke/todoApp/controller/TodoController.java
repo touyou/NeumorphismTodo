@@ -1,18 +1,16 @@
 package com.teamlab.fujiiyosuke.todoApp.controller;
 
 import com.teamlab.fujiiyosuke.todoApp.entity.Todo;
+import com.teamlab.fujiiyosuke.todoApp.form.SearchForm;
 import com.teamlab.fujiiyosuke.todoApp.form.TodoForm;
 import com.teamlab.fujiiyosuke.todoApp.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
@@ -113,12 +111,18 @@ public class TodoController {
 
     /**
      * Search page
-     * @param model リクエストパラメータ
-     * @return viewのパス
+     * @param word 検索パラメータ
+     * @param mav ModelAndView
+     * @return 設定済のModelAndView
      */
     @GetMapping("/search")
-    public String search(Model model) {
-        return "search";
+    public ModelAndView search(@RequestParam("word")@Nullable String word, @ModelAttribute("searchForm")SearchForm form, ModelAndView mav) {
+        mav.setViewName("search");
+        mav.addObject("formatter", new SimpleDateFormat("yyyy年MM月dd日"));
+        mav.addObject("list", todoService.findByPartOfName(word));
+        form.setWord(word);
+        mav.addObject("withoutParam", word == null);
+        return mav;
     }
 
     /**
