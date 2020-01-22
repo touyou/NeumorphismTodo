@@ -50,13 +50,13 @@ public class TodoService {
     }
 
     /**
-     * 名前が一緒かつIDの異なるものの検索
+     * 名前が一緒かつIDの異なるものの該当数
      * @param name Todo名
      * @param id ID
-     * @return Todo名が同じで違うデータ
+     * @return Todo名が同じで違うデータの数
      */
-    public List<Todo> findByNameNotId(String name, Long id) {
-        return todoRepository.findByNameNotId(name, id);
+    public int countByNameNotId(String name, Long id) {
+        return todoRepository.countByNameNotId(name, id);
     }
 
     /**

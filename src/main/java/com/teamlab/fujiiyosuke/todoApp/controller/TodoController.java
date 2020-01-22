@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -111,8 +110,7 @@ public class TodoController {
     @PostMapping("/edit/{id}")
     @Transactional(readOnly = false)
     public ModelAndView update(@PathVariable Long id, @ModelAttribute("todoFom")@Validated TodoForm form, BindingResult result, ModelAndView mav) {
-        List<Todo> todos = todoService.findByNameNotId(form.getName(), id);
-        if (!todos.isEmpty()) {
+        if (todoService.countByNameNotId(form.getName(), id) > 0) {
             result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
         }
         if (result.hasErrors()) {
