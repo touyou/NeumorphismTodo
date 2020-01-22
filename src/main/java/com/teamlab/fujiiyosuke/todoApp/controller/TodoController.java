@@ -1,7 +1,5 @@
 package com.teamlab.fujiiyosuke.todoApp.controller;
 
-import com.teamlab.fujiiyosuke.todoApp.entity.Todo;
-import com.teamlab.fujiiyosuke.todoApp.exception.TodoNotFoundException;
 import com.teamlab.fujiiyosuke.todoApp.form.TodoForm;
 import com.teamlab.fujiiyosuke.todoApp.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
-import java.util.Optional;
 
 /**
  * TodoのControllerクラス
@@ -53,14 +50,11 @@ public class TodoController {
     @PostMapping("/add")
     @Transactional(readOnly = false)
     public ModelAndView add(@ModelAttribute("todoForm")@Validated TodoForm form, BindingResult result, ModelAndView mav) {
-        if (todoService.countByName(form.getName()) > 0) {
-            result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
-        }
+        todoService.addValidate(result, form.getName());
         if (result.hasErrors()) {
             return index(form, mav);
         }
-        Todo newTodo = new Todo(form.getName(), form.getDeadline());
-        todoService.create(newTodo);
+        todoService.create(form.getName(), form.getDeadline());
         return new ModelAndView("redirect:/");
     }
 
@@ -73,11 +67,7 @@ public class TodoController {
     @PostMapping("/done/{id}")
     @Transactional(readOnly = false)
     public ModelAndView switchStatus(@PathVariable Long id, ModelAndView mav) {
-        Optional<Todo> optionalTodo = todoService.findById(id);
-        optionalTodo.ifPresent(todo -> {
-            todo.setDone(!todo.getDone());
-            todoService.update(todo);
-        });
+        todoService.updateDone(id);
         return new ModelAndView("redirect:/");
     }
 
@@ -91,14 +81,7 @@ public class TodoController {
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable Long id, @ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
         mav.setViewName("edit");
-        Optional<Todo> optionalTodo = todoService.findById(id);
-        if (!optionalTodo.isPresent()) {
-            throw new TodoNotFoundException();
-        }
-        optionalTodo.ifPresent(todo -> {
-            form.setName(todo.getName());
-            form.setDeadline(todo.getDeadlineDate());
-        });
+        todoService.update(id, form.getName(), form.getDeadline());
         mav.addObject("id", id);
         return mav;
     }
@@ -114,9 +97,7 @@ public class TodoController {
     @PostMapping("/edit/{id}")
     @Transactional(readOnly = false)
     public ModelAndView update(@PathVariable Long id, @ModelAttribute("todoFom")@Validated TodoForm form, BindingResult result, ModelAndView mav) {
-        if (todoService.countByNameNotId(form.getName(), id) > 0) {
-            result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
-        }
+        todoService.editValidate(result, form.getName(), id);
         if (result.hasErrors()) {
             mav.setViewName("edit");
             mav.addObject("todoForm", form);
@@ -124,10 +105,7 @@ public class TodoController {
             mav.addObject("validationError", result.getFieldErrors());
             return mav;
         }
-        Todo todo = todoService.findById(id).get();
-        todo.setName(form.getName());
-        todo.setDeadlineDate(form.getDeadline());
-        todoService.update(todo);
+        todoService.update(id, form.getName(), form.getDeadline());
         return new ModelAndView("redirect:/");
     }
 
