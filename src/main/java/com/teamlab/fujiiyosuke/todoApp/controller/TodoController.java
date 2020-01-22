@@ -5,7 +5,6 @@ import com.teamlab.fujiiyosuke.todoApp.form.SearchForm;
 import com.teamlab.fujiiyosuke.todoApp.form.TodoForm;
 import com.teamlab.fujiiyosuke.todoApp.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -116,13 +115,30 @@ public class TodoController {
      * @return 設定済のModelAndView
      */
     @GetMapping("/search")
-    public ModelAndView search(@RequestParam("word")@Nullable String word, @ModelAttribute("searchForm")SearchForm form, ModelAndView mav) {
+    public ModelAndView search(@RequestParam(name = "word", required = false)String word, @ModelAttribute("searchForm")SearchForm form, ModelAndView mav) {
         mav.setViewName("search");
         mav.addObject("formatter", new SimpleDateFormat("yyyy年MM月dd日"));
         mav.addObject("list", todoService.findByPartOfName(word));
         form.setWord(word);
-        mav.addObject("withoutParam", word == null);
+        mav.addObject("word", word);
         return mav;
+    }
+
+    /**
+     * Doneの切り替え
+     * @param id 切り替えるTodoのID
+     * @param mav ModelAndView
+     * @return Searchへのリダイレクト
+     */
+    @PostMapping("/search/done/{id}")
+    @Transactional(readOnly = false)
+    public ModelAndView switchStatusInSearch(@RequestParam(name = "word")String word, @PathVariable Long id, ModelAndView mav) {
+        Optional<Todo> optionalTodo = todoService.findById(id);
+        optionalTodo.ifPresent(todo -> {
+            todo.setDone(!todo.getDone());
+            todoService.update(todo);
+        });
+        return new ModelAndView("redirect:/search?word=" + word);
     }
 
     /**
