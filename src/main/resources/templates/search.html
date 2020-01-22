@@ -25,7 +25,7 @@
     <th:block th:unless="${list.isEmpty()}">
         <span class="error" th:unless="${word == null}">Todoが[[${list.size()}]]件見つかりました。</span>
         <div class="card" th:each="todo : ${list}">
-            <p>[[${todo.name}]]</p>
+            <p th:utext="${todo.name}"></p>
             <p>期限: [[${formatter.format(todo.deadlineDate)}]]</p>
             <p>作成日: [[${formatter.format(todo.createDate)}]]</p>
             <a th:href="@{/edit/{id}(id=${todo.id})}">編集</a>
