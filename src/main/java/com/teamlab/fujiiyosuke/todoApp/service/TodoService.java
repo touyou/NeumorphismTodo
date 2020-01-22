@@ -147,6 +147,11 @@ public class TodoService {
                 .replace(" ", "&nbsp;");
     }
 
+    /**
+     * SQL escaping
+     * @param word original word
+     * @return result
+     */
     private String sqlEscape(String word) {
         return escape(word)
                 .replace("%", "\\%")
