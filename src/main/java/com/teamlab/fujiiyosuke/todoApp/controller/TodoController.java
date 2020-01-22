@@ -1,6 +1,7 @@
 package com.teamlab.fujiiyosuke.todoApp.controller;
 
 import com.teamlab.fujiiyosuke.todoApp.entity.Todo;
+import com.teamlab.fujiiyosuke.todoApp.exception.TodoNotFoundException;
 import com.teamlab.fujiiyosuke.todoApp.form.TodoForm;
 import com.teamlab.fujiiyosuke.todoApp.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,7 +93,7 @@ public class TodoController {
         mav.setViewName("edit");
         Optional<Todo> optionalTodo = todoService.findById(id);
         if (!optionalTodo.isPresent()) {
-            return new ModelAndView("redirect:/404");
+            throw new TodoNotFoundException();
         }
         optionalTodo.ifPresent(todo -> {
             form.setName(todo.getName());
@@ -138,15 +139,5 @@ public class TodoController {
     @GetMapping("/search")
     public String search(Model model) {
         return "search";
-    }
-
-    /**
-     * 404 page
-     * @param model parameter
-     * @return view path
-     */
-    @GetMapping("/404")
-    public String notFound(Model model) {
-        return "404";
     }
 }
