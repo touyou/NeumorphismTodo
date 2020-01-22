@@ -28,18 +28,15 @@
         </div>
     </section>
     <main>
-        <th:block th:if="${!list.isEmpty()}">
+        <th:block th:unless="${list.isEmpty()}">
             <div class="card" th:each="todo : ${list}">
                 <p>[[${todo.name}]]</p>
                 <p>期限: [[${formatter.format(todo.deadlineDate)}]]</p>
                 <p>作成日: [[${formatter.format(todo.createDate)}]]</p>
                 <a th:href="@{/edit/{id}(id=${todo.id})}">編集</a>
-                <th:block th:if="${todo.done}">
-                    <p>Done</p>
-                </th:block>
-                <th:block th:if="${!todo.done}">
-                    <p>not done</p>
-                </th:block>
+                <form th:action="@{/done/{id}(id=${todo.id})}" th:method="put">
+                    <input th:value="${todo.done} ? '完了' : '未完了'" type="submit" />
+                </form>
             </div>
         </th:block>
         <th:block th:if="${list.isEmpty()}">

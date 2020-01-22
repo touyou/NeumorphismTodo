@@ -65,6 +65,23 @@ public class TodoController {
     }
 
     /**
+     * Doneの切り替え
+     * @param id 切り替えるTodoのID
+     * @param mav ModelAndView
+     * @return Indexへのリダイレクト
+     */
+    @PostMapping("/done/{id}")
+    @Transactional(readOnly = false)
+    public ModelAndView switchStatus(@PathVariable Long id, ModelAndView mav) {
+        Optional<Todo> optionalTodo = todoService.findById(id);
+        optionalTodo.ifPresent(todo -> {
+            todo.setDone(!todo.getDone());
+            todoService.update(todo);
+        });
+        return new ModelAndView("redirect:/");
+    }
+
+    /**
      * Edit View
      * @param id path id
      * @param form 空のフォーム
