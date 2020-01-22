@@ -91,6 +91,9 @@ public class TodoController {
     public ModelAndView edit(@PathVariable Long id, @ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
         mav.setViewName("edit");
         Optional<Todo> optionalTodo = todoService.findById(id);
+        if (!optionalTodo.isPresent()) {
+            return new ModelAndView("redirect:/404");
+        }
         optionalTodo.ifPresent(todo -> {
             form.setName(todo.getName());
             form.setDeadline(todo.getDeadlineDate());
@@ -135,5 +138,15 @@ public class TodoController {
     @GetMapping("/search")
     public String search(Model model) {
         return "search";
+    }
+
+    /**
+     * 404 page
+     * @param model parameter
+     * @return view path
+     */
+    @GetMapping("/404")
+    public String notFound(Model model) {
+        return "404";
     }
 }
