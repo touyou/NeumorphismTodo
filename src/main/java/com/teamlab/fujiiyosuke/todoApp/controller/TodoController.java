@@ -99,9 +99,11 @@ public class TodoController {
             result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
         }
         if (result.hasErrors()) {
-            // todo: back to edit and show validation result
-//            return edit(id, form, mav);
-            return new ModelAndView("redirect:/");
+            mav.setViewName("edit");
+            mav.addObject("todoForm", form);
+            mav.addObject("id", id);
+            mav.addObject("validationError", result.getFieldErrors());
+            return mav;
         }
         Todo todo = todoService.findById(id).get();
         todo.setName(form.getName());

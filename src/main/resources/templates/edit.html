@@ -18,7 +18,7 @@
         <div class="content">
             <form th:action="@{/edit/{id}(id=${id})}" th:method="put" th:object="${todoForm}">
                 <ul>
-                    <li style="color: red;" th:each="e : ${#fields.detailedErrors()}" th:text="${e.message}" />
+                    <li style="color: red;" th:each="e : ${validationError}" th:text="${e.defaultMessage}" />
                 </ul>
                 <p>TODO名: <input th:field="*{name}" type="text" /></p>
                 <p>期限: <input th:field="*{deadline}" type="date" /></p>
