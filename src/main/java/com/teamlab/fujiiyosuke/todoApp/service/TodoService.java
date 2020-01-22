@@ -23,13 +23,9 @@ public class TodoService {
     private TodoRepository todoRepository;
 
     /**
-     * find all data
-     * @return all data in database
+     * find all ordered by created_at
+     * @return all list
      */
-    public List<Todo> findAll() {
-        return todoRepository.findAll();
-    }
-
     public List<Todo> findAllOrderByCreateDate() {
         return todoRepository.findAllOrderByCreateDate();
     }
@@ -44,12 +40,21 @@ public class TodoService {
     }
 
     /**
+     * find data by part of name
+     * @param name 検索語句
+     * @return 検索結果
+     */
+    public List<Todo> findByPartOfName(String name) {
+        return todoRepository.findByPartOfName(name);
+    }
+
+    /**
      * Add validation
      * @param result BindingResult
      * @param name add name
      */
     public void addValidate(BindingResult result, String name) {
-        if (todoRepository.countByName(name) > 0) {
+        if (todoRepository.countByName(escape(name)) > 0) {
             result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
         }
     }
@@ -61,7 +66,7 @@ public class TodoService {
      * @param id current id
      */
     public void editValidate(BindingResult result, String name, Long id) {
-        if (todoRepository.countByNameNotId(name, id) > 0) {
+        if (todoRepository.countByNameNotId(escape(name), id) > 0) {
             result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
         }
     }
@@ -73,7 +78,7 @@ public class TodoService {
      * @return 保存結果のTodo(disposable)
      */
     public Todo create(String name, Date date) {
-        Todo todo = new Todo(name, date);
+        Todo todo = new Todo(escape(name), date);
         return todoRepository.save(todo);
     }
 
@@ -89,7 +94,7 @@ public class TodoService {
         Optional<Todo> opTodo = findById(id);
         if (opTodo.isPresent()) {
             Todo todo = opTodo.get();
-            todo.setName(newName);
+            todo.setName(escape(newName));
             todo.setDeadlineDate(newDate);
             return todoRepository.save(todo);
         }
@@ -125,5 +130,20 @@ public class TodoService {
      */
     public void deleteAll() {
         todoRepository.deleteAll();
+    }
+
+    /**
+     * HTML用のエスケープ処理
+     * @param word 元の文字列
+     * @return result
+     */
+    private String escape(String word) {
+        return word
+                .replace("&", "&amp;")
+                .replace("\"", "&quot;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("'", "&#39;")
+                .replace(" ", "&nbsp;");
     }
 }

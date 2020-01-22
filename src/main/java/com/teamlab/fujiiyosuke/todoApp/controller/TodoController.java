@@ -1,6 +1,5 @@
 package com.teamlab.fujiiyosuke.todoApp.controller;
 
-import com.teamlab.fujiiyosuke.todoApp.entity.Todo;
 import com.teamlab.fujiiyosuke.todoApp.form.SearchForm;
 import com.teamlab.fujiiyosuke.todoApp.form.TodoForm;
 import com.teamlab.fujiiyosuke.todoApp.service.TodoService;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
-import java.util.Optional;
 
 /**
  * TodoのControllerクラス
@@ -133,26 +131,7 @@ public class TodoController {
     @PostMapping("/search/done/{id}")
     @Transactional(readOnly = false)
     public ModelAndView switchStatusInSearch(@RequestParam(name = "word")String word, @PathVariable Long id, ModelAndView mav) {
-        Optional<Todo> optionalTodo = todoService.findById(id);
-        optionalTodo.ifPresent(todo -> {
-            todo.setDone(!todo.getDone());
-            todoService.update(todo);
-        });
+        todoService.updateDone(id);
         return new ModelAndView("redirect:/search?word=" + word);
-    }
-
-    /**
-     * HTML用のエスケープ処理
-     * @param word 元の文字列
-     * @return result
-     */
-    private String escape(String word) {
-        return word
-                .replace("&", "&amp;")
-                .replace("\"", "&quot;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;")
-                .replace("'", "&#39;")
-                .replace(" ", "&nbsp;");
     }
 }

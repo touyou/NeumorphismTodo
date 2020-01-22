@@ -14,7 +14,7 @@
 <section>
     <div class="search_box">
         <div class="content">
-            <form th:method="put" th:object="${searchForm}">
+            <form method="put" th:object="${searchForm}">
                 <input th:field="*{word}" type="text" />
                 <input type="submit" value="検索" />
             </form>

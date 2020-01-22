@@ -41,6 +41,6 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
      * @param name 検索語句
      * @return result
      */
-    @Query("select d from Todo d where d.name like concat('%',:NAME,'%')")
+    @Query("select d from Todo d where d.name like concat('%',:NAME,'%') order by d.createDate desc")
     public List<Todo> findByPartOfName(@Param("NAME")String name);
 }
