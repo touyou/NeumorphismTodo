@@ -45,7 +45,7 @@ public class TodoService {
      * @return 検索結果
      */
     public List<Todo> findByPartOfName(String name) {
-        return todoRepository.findByPartOfName(name);
+        return todoRepository.findByPartOfName(sqlEscape(name));
     }
 
     /**
@@ -145,5 +145,11 @@ public class TodoService {
                 .replace(">", "&gt;")
                 .replace("'", "&#39;")
                 .replace(" ", "&nbsp;");
+    }
+
+    private String sqlEscape(String word) {
+        return escape(word)
+                .replace("%", "\\%")
+                .replace("_", "\\_");
     }
 }
