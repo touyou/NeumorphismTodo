@@ -1,3 +1,114 @@
 * {
   font-family: 'Noto Sans JP', sans-serif;
 }
+
+html, body {
+    background-color: #d9d9d9;
+    color: #555555;
+}
+
+header {
+    background-color: #d9d9d9;
+    box-shadow: 0px 5px 16px #adadad;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    width: 100vw;
+    height: 96px;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+header h1 {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 3 1 auto;
+    -ms-flex: 3 1 auto;
+    flex: 3 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+    margin-left: 32px;
+    text-align: left;
+
+    color: rgb(0, 0, 0, 0.1);
+    text-shadow: 1px 1px 3px #ebebeb, -1px -1px 3px #c7c7c7;
+    font-weight: 900;
+    font-size: 60px;
+}
+
+header h1 a:link,
+header h1 a:visited,
+header h1 a:hover,
+header h1 a:active {
+    color: rgb(0, 0, 0, 0.1);
+}
+
+header p {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+    margin-right: 32px;
+    text-align: right;
+}
+
+header p a {
+    display: inline-block;
+    width: 100px;
+    height: 40px;
+    background-color: #d9d9d9;
+    box-shadow: 1px 1px 3px #c7c7c7, -1px -1px 3px #ebebeb;
+    font-weight: 700;
+    font-size: 25px;
+    text-align: center;
+}
+
+
+header p a:link,
+header p a:visited,
+header p a:hover,
+header p a:active {
+    color: #555555;
+}
+
+main {
+    margin-top: 128px;
+}
+
+.card {
+    width: 90%;
+    height: 30%;
+    border-radius: 20px;
+    background-color: #d9d9d9;
+    box-shadow: -15px -15px 30px #f2f2f2, 15px 15px 30px #adadad;
+    margin: 5%;
+    padding: 32px;
+}

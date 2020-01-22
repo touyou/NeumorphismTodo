@@ -12,6 +12,7 @@
         <h1><a href="/">TODOリスト</a></h1>
         <p><a href="/search">検索</a></p>
     </header>
+    <main>
     <section>
         <div class="card">
             <h1>新しいTODOを作成する。</h1>
@@ -27,7 +28,7 @@
             </div>
         </div>
     </section>
-    <main>
+    <section>
         <th:block th:unless="${list.isEmpty()}">
             <div class="card" th:each="todo : ${list}">
                 <p th:utext="${todo.name}"></p>
@@ -42,6 +43,7 @@
         <th:block th:if="${list.isEmpty()}">
             <span class="error">登録されたTODOはございません。</span>
         </th:block>
+    </section>
     </main>
 </body>
 </html>
