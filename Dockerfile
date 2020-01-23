@@ -1,5 +1,13 @@
 FROM openjdk:13-jdk-alpine
+
 VOLUME /tmp
-ARG JAR_FILE
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar
+
+RUN mkdir /app
+WORKDIR /app
+
+RUN adduser -S sboot
+USER sboot
+
+ENV JAR_TARGET "Todo-0.0.1-SNAPSHOT.jar"
+
+ENTRYPOINT ["sh","-c","java -jar -Dspring.profiles.active=docker build/libs/${JAR_TARGET}"]

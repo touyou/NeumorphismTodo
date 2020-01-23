@@ -1,0 +1,35 @@
+version: '3.3'
+services:
+  dbserver:
+    build: ./docker/mysql
+    image: tododb:0.0.1
+    restart: always
+    environment:
+      MYSQL_DATABASE: tododb
+      MYSQL_USER: sboot
+      MYSQL_PASSWORD: sboot
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+    - "3314:3306"
+    volumes:
+    - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+    - ./docker/mysql/conf.d:/etc/mysql/conf.d
+    - ./log/mysql:/var/log/mysql
+  app:
+    build: .
+    image: touyou/springtodo:0.0.1
+    depends_on:
+    - dbserver
+    ports:
+    - "8080:8080"
+    volumes:
+    - .:/app
+    environment:
+      JAR_TARGET: Todo-0.0.1-SNAPSHOT.jar
+      spring.datasource.driverClassName: "com.mysql.cj.jdbc.Driver"
+      spring.datasource.url: "jdbc:mysql://dbserver/tododb"
+      spring.datasource.username: "sboot"
+      spring.datasource.password: "sboot"
+volumes:
+  mysql-db:
+    driver: local

@@ -1,0 +1,35 @@
+spring:
+  profiles:
+    active: localhost
+---
+spring:
+  profiles: localhost
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tododb
+    username: root
+    password:
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  data:
+    web:
+      base-path: /
+---
+spring:
+  profiles: docker
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://dbserver/tododb
+    username: root
+    passowrd: root
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  data:
+    web:
+      base-path: /
