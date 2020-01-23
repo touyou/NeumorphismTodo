@@ -33,3 +33,19 @@ spring:
   data:
     web:
       base-path: /
+---
+spring:
+  profiles: aws
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://dbserver/tododb
+    username: # AWS Username
+    passowrd: # AWS Password
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  data:
+    web:
+      base-path: /
