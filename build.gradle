@@ -37,8 +37,9 @@ test {
 	useJUnitPlatform()
 }
 
+
 docker {
-	name "${project.group}/${bootJar.archiveBaseName}"
+	name "touyou/springtodo"
 	files bootJar.archivePath
 	buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
 }
