@@ -1,20 +1,20 @@
 package com.teamlab.fujiiyosuke.todoApp.controller;
 
+import com.teamlab.fujiiyosuke.todoApp.entity.Todo;
+import com.teamlab.fujiiyosuke.todoApp.exception.TodoNotFoundException;
+import com.teamlab.fujiiyosuke.todoApp.form.SearchForm;
 import com.teamlab.fujiiyosuke.todoApp.form.TodoForm;
 import com.teamlab.fujiiyosuke.todoApp.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 
 /**
  * TodoのControllerクラス
@@ -81,7 +81,13 @@ public class TodoController {
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable Long id, @ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
         mav.setViewName("edit");
-        todoService.update(id, form.getName(), form.getDeadline());
+        Optional<Todo> todo = todoService.findById(id);
+        todo.ifPresentOrElse(t -> {
+            form.setName(t.getName());
+            form.setDeadline(t.getDeadlineDate());
+        }, () -> {
+            throw new TodoNotFoundException();
+        });
         mav.addObject("id", id);
         return mav;
     }
@@ -111,11 +117,29 @@ public class TodoController {
 
     /**
      * Search page
-     * @param model リクエストパラメータ
-     * @return viewのパス
+     * @param word 検索パラメータ
+     * @param mav ModelAndView
+     * @return 設定済のModelAndView
      */
     @GetMapping("/search")
-    public String search(Model model) {
-        return "search";
+    public ModelAndView search(@RequestParam(name = "word", required = false)String word, @ModelAttribute("searchForm")SearchForm form, ModelAndView mav) {
+        mav.setViewName("search");
+        mav.addObject("formatter", new SimpleDateFormat("yyyy年MM月dd日"));
+        mav.addObject("list", todoService.findByPartOfName(word));
+        mav.addObject("word", word);
+        return mav;
+    }
+
+    /**
+     * Doneの切り替え
+     * @param id 切り替えるTodoのID
+     * @param mav ModelAndView
+     * @return Searchへのリダイレクト
+     */
+    @PostMapping("/search/done/{id}")
+    @Transactional(readOnly = false)
+    public ModelAndView switchStatusInSearch(@RequestParam(name = "word")String word, @PathVariable Long id, ModelAndView mav) {
+        todoService.updateDone(id);
+        return new ModelAndView("redirect:/search?word=" + word);
     }
 }

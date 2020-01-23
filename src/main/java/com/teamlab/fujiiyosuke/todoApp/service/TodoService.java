@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.util.HtmlUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -23,13 +25,9 @@ public class TodoService {
     private TodoRepository todoRepository;
 
     /**
-     * find all data
-     * @return all data in database
+     * find all ordered by created_at
+     * @return all list
      */
-    public List<Todo> findAll() {
-        return todoRepository.findAll();
-    }
-
     public List<Todo> findAllOrderByCreateDate() {
         return todoRepository.findAllOrderByCreateDate();
     }
@@ -44,12 +42,24 @@ public class TodoService {
     }
 
     /**
+     * find data by part of name
+     * @param name 検索語句
+     * @return 検索結果
+     */
+    public List<Todo> findByPartOfName(String name) {
+        if (name == null) {
+            return new ArrayList<Todo>();
+        }
+        return todoRepository.findByPartOfName(sqlEscape(name));
+    }
+
+    /**
      * Add validation
      * @param result BindingResult
      * @param name add name
      */
     public void addValidate(BindingResult result, String name) {
-        if (todoRepository.countByName(name) > 0) {
+        if (todoRepository.countByName(HtmlUtils.htmlEscape(name)) > 0) {
             result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
         }
     }
@@ -61,7 +71,7 @@ public class TodoService {
      * @param id current id
      */
     public void editValidate(BindingResult result, String name, Long id) {
-        if (todoRepository.countByNameNotId(name, id) > 0) {
+        if (todoRepository.countByNameNotId(HtmlUtils.htmlEscape(name), id) > 0) {
             result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
         }
     }
@@ -73,7 +83,7 @@ public class TodoService {
      * @return 保存結果のTodo(disposable)
      */
     public Todo create(String name, Date date) {
-        Todo todo = new Todo(name, date);
+        Todo todo = new Todo(HtmlUtils.htmlEscape(name), date);
         return todoRepository.save(todo);
     }
 
@@ -89,7 +99,7 @@ public class TodoService {
         Optional<Todo> opTodo = findById(id);
         if (opTodo.isPresent()) {
             Todo todo = opTodo.get();
-            todo.setName(newName);
+            todo.setName(HtmlUtils.htmlEscape(newName));
             todo.setDeadlineDate(newDate);
             return todoRepository.save(todo);
         }
@@ -125,5 +135,16 @@ public class TodoService {
      */
     public void deleteAll() {
         todoRepository.deleteAll();
+    }
+
+    /**
+     * SQL escaping
+     * @param word original word
+     * @return result
+     */
+    private String sqlEscape(String word) {
+        return HtmlUtils.htmlEscape(word)
+                .replace("%", "~%")
+                .replace("_", "~_");
     }
 }

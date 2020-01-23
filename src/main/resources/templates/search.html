@@ -14,12 +14,29 @@
 <section>
     <div class="search_box">
         <div class="content">
-            <form method="post">
-                <input type="text" name="word" />
+            <form method="put" th:object="${searchForm}">
+                <input th:field="*{word}" type="text" />
                 <input type="submit" value="検索" />
             </form>
         </div>
     </div>
 </section>
+<main>
+    <th:block th:unless="${list.isEmpty()}">
+        <span class="error" th:unless="${word == null}">Todoが[[${list.size()}]]件見つかりました。</span>
+        <div class="card" th:each="todo : ${list}">
+            <p th:utext="${todo.name}"></p>
+            <p>期限: [[${formatter.format(todo.deadlineDate)}]]</p>
+            <p>作成日: [[${formatter.format(todo.createDate)}]]</p>
+            <a th:href="@{/edit/{id}(id=${todo.id})}">編集</a>
+            <form th:action="@{/search/done/{id}?word={word}(id=${todo.id}, word=${word})}" th:method="put">
+                <input th:value="${todo.done} ? '完了' : '未完了'" type="submit" />
+            </form>
+        </div>
+    </th:block>
+    <th:block th:if="${list.isEmpty()}">
+        <span class="error" th:unless="${word == null}">対象のTodoは見つかりません。</span>
+    </th:block>
+</main>
 </body>
 </html>
