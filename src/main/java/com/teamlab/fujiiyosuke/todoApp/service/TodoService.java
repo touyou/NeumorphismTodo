@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,7 +59,7 @@ public class TodoService {
      * @param name add name
      */
     public void addValidate(BindingResult result, String name) {
-        if (todoRepository.countByName(escape(name)) > 0) {
+        if (todoRepository.countByName(HtmlUtils.htmlEscape(name)) > 0) {
             result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
         }
     }
@@ -70,7 +71,7 @@ public class TodoService {
      * @param id current id
      */
     public void editValidate(BindingResult result, String name, Long id) {
-        if (todoRepository.countByNameNotId(escape(name), id) > 0) {
+        if (todoRepository.countByNameNotId(HtmlUtils.htmlEscape(name), id) > 0) {
             result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
         }
     }
@@ -82,7 +83,7 @@ public class TodoService {
      * @return 保存結果のTodo(disposable)
      */
     public Todo create(String name, Date date) {
-        Todo todo = new Todo(escape(name), date);
+        Todo todo = new Todo(HtmlUtils.htmlEscape(name), date);
         return todoRepository.save(todo);
     }
 
@@ -98,7 +99,7 @@ public class TodoService {
         Optional<Todo> opTodo = findById(id);
         if (opTodo.isPresent()) {
             Todo todo = opTodo.get();
-            todo.setName(escape(newName));
+            todo.setName(HtmlUtils.htmlEscape(newName));
             todo.setDeadlineDate(newDate);
             return todoRepository.save(todo);
         }
@@ -137,27 +138,12 @@ public class TodoService {
     }
 
     /**
-     * HTML用のエスケープ処理
-     * @param word 元の文字列
-     * @return result
-     */
-    private String escape(String word) {
-        return word
-                .replace("&", "&amp;")
-                .replace("\"", "&quot;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;")
-                .replace("'", "&#39;")
-                .replace(" ", "&nbsp;");
-    }
-
-    /**
      * SQL escaping
      * @param word original word
      * @return result
      */
     private String sqlEscape(String word) {
-        return escape(word)
+        return HtmlUtils.htmlEscape(word)
                 .replace("%", "~%")
                 .replace("_", "~_");
     }
