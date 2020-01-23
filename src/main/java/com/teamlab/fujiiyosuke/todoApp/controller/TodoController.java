@@ -1,17 +1,17 @@
 package com.teamlab.fujiiyosuke.todoApp.controller;
 
-import com.teamlab.fujiiyosuke.todoApp.entity.Todo;
 import com.teamlab.fujiiyosuke.todoApp.form.TodoForm;
 import com.teamlab.fujiiyosuke.todoApp.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
@@ -32,7 +32,7 @@ public class TodoController {
      * @param mav ModelAndView
      * @return 設定済のModelAndView
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping("/")
     public ModelAndView index(@ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
         mav.setViewName("top");
         mav.addObject("formatter", new SimpleDateFormat("yyyy年MM月dd日"));
@@ -47,27 +47,66 @@ public class TodoController {
      * @param mav ModelAndView
      * @return 加工済のModelAndView
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @PostMapping("/add")
+    @Transactional(readOnly = false)
     public ModelAndView add(@ModelAttribute("todoForm")@Validated TodoForm form, BindingResult result, ModelAndView mav) {
-        if (todoService.countByName(form.getName()) > 0) {
-            result.rejectValue("name", "error.name", "同名のTodoが存在しています。");
-        }
+        todoService.addValidate(result, form.getName());
         if (result.hasErrors()) {
             return index(form, mav);
         }
-        Todo newTodo = new Todo(form.getName(), form.getDeadline());
-        todoService.create(newTodo);
+        todoService.create(form.getName(), form.getDeadline());
         return new ModelAndView("redirect:/");
     }
 
     /**
-     * Edit page
-     * @param model リクエストパラメータ
-     * @return viewのパス
+     * Doneの切り替え
+     * @param id 切り替えるTodoのID
+     * @param mav ModelAndView
+     * @return Indexへのリダイレクト
      */
-    @GetMapping("/edit")
-    public String edit(Model model) {
-        return "edit";
+    @PostMapping("/done/{id}")
+    @Transactional(readOnly = false)
+    public ModelAndView switchStatus(@PathVariable Long id, ModelAndView mav) {
+        todoService.updateDone(id);
+        return new ModelAndView("redirect:/");
+    }
+
+    /**
+     * Edit View
+     * @param id path id
+     * @param form 空のフォーム
+     * @param mav ModelAndView
+     * @return 設定済みのModelAndView
+     */
+    @GetMapping("/edit/{id}")
+    public ModelAndView edit(@PathVariable Long id, @ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
+        mav.setViewName("edit");
+        todoService.update(id, form.getName(), form.getDeadline());
+        mav.addObject("id", id);
+        return mav;
+    }
+
+    /**
+     * Update request
+     * @param id path id
+     * @param form フォームのデータ
+     * @param result バリデーションの結果
+     * @param mav ModelAndView
+     * @return 設定済みのModelAndView
+     */
+    @PostMapping("/edit/{id}")
+    @Transactional(readOnly = false)
+    public ModelAndView update(@PathVariable Long id, @ModelAttribute("todoFom")@Validated TodoForm form, BindingResult result, ModelAndView mav) {
+        todoService.editValidate(result, form.getName(), id);
+        if (result.hasErrors()) {
+            mav.setViewName("edit");
+            mav.addObject("todoForm", form);
+            mav.addObject("id", id);
+            mav.addObject("validationError", result.getFieldErrors());
+            return mav;
+        }
+        todoService.update(id, form.getName(), form.getDeadline());
+        return new ModelAndView("redirect:/");
     }
 
     /**

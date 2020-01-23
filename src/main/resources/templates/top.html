@@ -20,7 +20,7 @@
                     <ul>
                         <li th:each="e : ${#fields.detailedErrors()}" th:text="${e.message}" style="color: red;" />
                     </ul>
-                    <p>TODO名: <input type="text" th:field="*{name}" th:errorclass="fieldError" /></p>
+                    <p>TODO名: <input th:field="*{name}" type="text" /></p>
                     <p>期限: <input type="date" th:field="*{deadline}" /></p>
                     <input type="submit" value="TODOの追加" />
                 </form>
@@ -28,17 +28,15 @@
         </div>
     </section>
     <main>
-        <th:block th:if="${!list.isEmpty()}">
+        <th:block th:unless="${list.isEmpty()}">
             <div class="card" th:each="todo : ${list}">
                 <p>[[${todo.name}]]</p>
                 <p>期限: [[${formatter.format(todo.deadlineDate)}]]</p>
                 <p>作成日: [[${formatter.format(todo.createDate)}]]</p>
-                <th:block th:if="${todo.done}">
-                    <p>Done</p>
-                </th:block>
-                <th:block th:if="${!todo.done}">
-                    <p>not done</p>
-                </th:block>
+                <a th:href="@{/edit/{id}(id=${todo.id})}">編集</a>
+                <form action="#" th:action="@{/done/{id}(id=${todo.id})}" th:method="put">
+                    <input th:value="${todo.done} ? '完了' : '未完了'" type="submit" />
+                </form>
             </div>
         </th:block>
         <th:block th:if="${list.isEmpty()}">
