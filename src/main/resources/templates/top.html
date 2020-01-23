@@ -21,8 +21,8 @@
                     <ul>
                         <li th:each="e : ${#fields.detailedErrors()}" th:text="${e.message}" />
                     </ul>
-                    <p><label>TODO名</label><input class="text_field" th:field="*{name}" type="text" /></p>
-                    <p><label>期限</label><input class="text_field" th:field="*{deadline}" type="date" /></p>
+                    <p><label>TODO名</label><input class="text_field" placeholder="30文字以内で入力してください。" th:field="*{name}" type="text" /></p>
+                    <p><label>期限</label><input class="text_field" placeholder="2020-01-01" th:field="*{deadline}" type="date" /></p>
                     <input class="submit_btn" type="submit" value="追加" />
                 </form>
             </div>
