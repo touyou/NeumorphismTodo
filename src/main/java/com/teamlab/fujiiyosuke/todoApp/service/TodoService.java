@@ -2,6 +2,7 @@ package com.teamlab.fujiiyosuke.todoApp.service;
 
 import com.teamlab.fujiiyosuke.todoApp.entity.Todo;
 import com.teamlab.fujiiyosuke.todoApp.exception.TodoNotFoundException;
+import com.teamlab.fujiiyosuke.todoApp.form.TodoForm;
 import com.teamlab.fujiiyosuke.todoApp.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,21 @@ public class TodoService {
             return new ArrayList<Todo>();
         }
         return todoRepository.findByPartOfName(sqlEscape(name));
+    }
+
+    /**
+     * set edit form
+     * @param id id
+     * @param form form
+     */
+    public void setEditForm(Long id, TodoForm form) {
+        Optional<Todo> optionalTodo = todoRepository.findById(id);
+        optionalTodo.ifPresentOrElse(todo -> {
+            form.setName(HtmlUtils.htmlUnescape(todo.getName()));
+            form.setDeadline(todo.getDeadlineDate());
+        }, () -> {
+            throw new TodoNotFoundException();
+        });
     }
 
     /**

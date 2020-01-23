@@ -12,36 +12,42 @@
         <h1><a href="/">TODOリスト</a></h1>
         <p><a href="/search">検索</a></p>
     </header>
+    <main>
     <section>
-        <div class="card">
-            <h1>新しいTODOを作成する。</h1>
+        <div class="input_card">
+            <h1>新規作成</h1>
             <div class="content">
                 <form method="post" th:action="@{/add}" th:object="${todoForm}">
                     <ul>
-                        <li th:each="e : ${#fields.detailedErrors()}" th:text="${e.message}" style="color: red;" />
+                        <li th:each="e : ${#fields.detailedErrors()}" th:text="${e.message}" />
                     </ul>
-                    <p>TODO名: <input th:field="*{name}" type="text" /></p>
-                    <p>期限: <input type="date" th:field="*{deadline}" /></p>
-                    <input type="submit" value="TODOの追加" />
+                    <p><label>TODO名</label><input class="text_field" placeholder="30文字以内で入力してください。" th:field="*{name}" type="text" /></p>
+                    <p><label>期限</label><input class="text_field" placeholder="2020-01-01" th:field="*{deadline}" type="date" /></p>
+                    <input class="submit_btn" type="submit" value="追加" />
                 </form>
             </div>
         </div>
     </section>
-    <main>
+    <section>
         <th:block th:unless="${list.isEmpty()}">
             <div class="card" th:each="todo : ${list}">
-                <p th:utext="${todo.name}"></p>
-                <p>期限: [[${formatter.format(todo.deadlineDate)}]]</p>
-                <p>作成日: [[${formatter.format(todo.createDate)}]]</p>
-                <a th:href="@{/edit/{id}(id=${todo.id})}">編集</a>
-                <form action="#" th:action="@{/done/{id}(id=${todo.id})}" th:method="put">
-                    <input th:value="${todo.done} ? '完了' : '未完了'" type="submit" />
-                </form>
+                <h1 th:utext="${todo.name}"></h1>
+                <ul>
+                    <li><small>期限</small> [[${formatter.format(todo.deadlineDate)}]]</li>
+                    <li><small>作成日</small> [[${formatter.format(todo.createDate)}]]</li>
+                </ul>
+                <div class="card_btns">
+                    <button th:onclick="|window.location.href='@{/edit/{id}(id=${todo.id})}'|">編集</button>
+                    <form action="#" th:action="@{/done/{id}(id=${todo.id})}" th:method="put">
+                        <input th:class="${todo.done} ? 'done' : 'undone'" th:value="${todo.done} ? '完了' : '未完了'" type="submit" />
+                    </form>
+                </div>
             </div>
         </th:block>
         <th:block th:if="${list.isEmpty()}">
-            <span class="error">登録されたTODOはございません。</span>
+            <span class="error">登録されたTODOはありません。</span>
         </th:block>
+    </section>
     </main>
 </body>
 </html>
