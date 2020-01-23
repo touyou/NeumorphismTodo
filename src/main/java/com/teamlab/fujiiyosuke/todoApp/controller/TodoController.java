@@ -126,7 +126,6 @@ public class TodoController {
         mav.setViewName("search");
         mav.addObject("formatter", new SimpleDateFormat("yyyy年MM月dd日"));
         mav.addObject("list", todoService.findByPartOfName(word));
-        form.setWord(word);
         mav.addObject("word", word);
         return mav;
     }
