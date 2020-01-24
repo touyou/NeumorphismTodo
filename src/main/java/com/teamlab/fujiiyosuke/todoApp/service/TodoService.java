@@ -150,6 +150,11 @@ public class TodoService {
         todoRepository.deleteAll();
     }
 
+    /**
+     * check it is debug mode
+     * @param adminPass admin pass
+     * @return debug mode or not
+     */
     public boolean isDebugMode(String adminPass) {
         ResourceBundle rb = ResourceBundle.getBundle("todo");
         return adminPass != null ? adminPass.equals(rb.getString("adminPass")) : false;

@@ -25,6 +25,7 @@ public class TodoController {
 
     /**
      * Index page
+     * @param adminPass Adminパスワードをパラメタに渡すことで全削除ボタンが現れる
      * @param form 空のフォームデータもしくはエラー時の元の入力値が入る
      * @param mav ModelAndView
      * @return 設定済のModelAndView
