@@ -30,10 +30,11 @@ public class TodoController {
      * @return 設定済のModelAndView
      */
     @GetMapping("/")
-    public ModelAndView index(@ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
+    public ModelAndView index(@RequestParam(name = "admin", required = false) String adminPass, @ModelAttribute("todoForm")TodoForm form, ModelAndView mav) {
         mav.setViewName("top");
         mav.addObject("formatter", new SimpleDateFormat("yyyy年MM月dd日"));
         mav.addObject("list", todoService.findAllOrderByCreateDate());
+        mav.addObject("debug", todoService.isDebugMode(adminPass));
         return mav;
     }
 
@@ -49,7 +50,7 @@ public class TodoController {
     public ModelAndView add(@ModelAttribute("todoForm")@Validated TodoForm form, BindingResult result, ModelAndView mav) {
         todoService.addValidate(result, form.getName());
         if (result.hasErrors()) {
-            return index(form, mav);
+            return index("", form, mav);
         }
         todoService.create(form.getName(), form.getDeadline());
         return new ModelAndView("redirect:/");
@@ -103,6 +104,31 @@ public class TodoController {
             return mav;
         }
         todoService.update(id, form.getName(), form.getDeadline());
+        return new ModelAndView("redirect:/");
+    }
+
+    /**
+     * Delete todo
+     * @param id todo id
+     * @param mav model and view
+     * @return redirect index
+     */
+    @PostMapping("/delete/{id}")
+    @Transactional(readOnly = false)
+    public ModelAndView delete(@PathVariable Long id, ModelAndView mav) {
+        todoService.deleteById(id);
+        return new ModelAndView("redirect:/");
+    }
+
+    /**
+     * Delete all
+     * @param mav model and view
+     * @return redirect index
+     */
+    @PostMapping("/clear")
+    @Transactional(readOnly = false)
+    public ModelAndView deleteAll(ModelAndView mav) {
+        todoService.deleteAll();
         return new ModelAndView("redirect:/");
     }
 

@@ -23,6 +23,7 @@
 
 - MySQL, Java, Gradleをセットアップ
 - 必要に応じて`create database tododb;`をMySQLで実行する
+- resources内に`todo.properties`を作成し`adminPass=[admin password]`の行を追加して保存する。
 - docker-composeで起動することも可能。ただしタイミングがおかしい時があるのでその際はアプリ側のDockerだけ起動しなおせば繋がる。
 - `./gradlew build && ./gradlew docker`でアプリケーションのDockerイメージを生成することができる。テスト実行中MySQLへの接続があるのでローカルでtododbがあるMySQLを立てておく必要はある。
 - Tableの作成はcreateTable.ddlを使う、もしくは最初の起動で作成される

@@ -261,3 +261,22 @@ small {
     font-weight: 700;
     padding: 2px 4px;
 }
+
+.delete_btn {
+  margin-top: 5%;
+  margin-bottom: 10%;
+  display: inline-block;
+  text-decoration: none;
+  width: 120px;
+  height: 60px;
+  background-color: #d9d9d9;
+  box-shadow: 3px 3px 5px #c7c7c7, -3px -3px 5px #ebebeb;
+  font-weight: 700;
+  font-size: 25px;
+  text-align: center;
+  color: #ef5350;
+}
+
+.delete_btn:focus {
+  outline: 0;
+}
