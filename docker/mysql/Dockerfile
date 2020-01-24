@@ -1,2 +1,2 @@
 FROM mysql:8.0.19
-#RUN touch /var/log/mysql/mysqld.log
+RUN mkdir -p /var/log/mysql && touch /var/log/mysql/mysqld.log

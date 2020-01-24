@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.2.3.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
+	id 'com.palantir.docker' version '0.24.0'
 }
 
 group = 'com.teamlab.fujiiyosuke'
@@ -34,4 +35,10 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+docker {
+	name "touyou/springtodo"
+	files bootJar.archivePath
+	buildArgs(['JAR_TARGET': "${bootJar.archiveName}"])
 }
