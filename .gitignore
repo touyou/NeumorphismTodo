@@ -33,3 +33,6 @@ out/
 
 ### MySQL log ###
 log/mysql/mysqld.log
+
+### AWS Config ###
+aws_run.sh

@@ -38,7 +38,7 @@ spring:
   profiles: aws
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://[dbserveraddr]/tododb # AWS DB Address
+    url: # AWS DB Address
     username: # AWS Username
     passowrd: # AWS Password
   jpa:

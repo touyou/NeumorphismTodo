@@ -43,3 +43,5 @@ docker {
 	files bootJar.archivePath
 	buildArgs(['JAR_TARGET': "${bootJar.archiveName}"])
 }
+
+
