@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo | Top</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:100,300,400,500,700,900&display=swap&subset=japanese" rel="stylesheet">
+    <link href="ress.css" rel="stylesheet" type="text/css">
+    <link href="common.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <header>
+        <h1><a href="/">TODOリスト</a></h1>
+        <p><a href="/search">検索</a></p>
+    </header>
+    <main>
+    <section>
+        <div class="input_card">
+            <h1>新規作成</h1>
+            <div class="content">
+                <form method="post" th:action="@{/add}" th:object="${todoForm}">
+                    <ul>
+                        <li th:each="e : ${#fields.detailedErrors()}" th:text="${e.message}" />
+                    </ul>
+                    <p><label>TODO名</label><input class="text_field" placeholder="30文字以内で入力してください。" th:field="*{name}" type="text" /></p>
+                    <p><label>期限</label><input class="text_field" placeholder="2020-01-01" th:field="*{deadline}" type="date" /></p>
+                    <input class="submit_btn" type="submit" value="追加" />
+                </form>
+            </div>
+        </div>
+    </section>
+    <section>
+        <th:block th:unless="${list.isEmpty()}">
+            <div class="card" th:each="todo : ${list}">
+                <h1 th:utext="${todo.name}"></h1>
+                <ul>
+                    <li><small>期限</small> [[${formatter.format(todo.deadlineDate)}]]</li>
+                    <li><small>作成日</small> [[${formatter.format(todo.createDate)}]]</li>
+                </ul>
+                <div class="card_btns">
+                    <button th:onclick="|window.location.href='@{/edit/{id}(id=${todo.id})}'|">編集</button>
+                    <form th:action="@{/done/{id}(id=${todo.id})}" th:method="put">
+                        <input th:class="${todo.done} ? 'done' : 'undone'" th:value="${todo.done} ? '完了' : '未完了'" type="submit" />
+                    </form>
+                </div>
+            </div>
+        </th:block>
+        <th:block th:if="${list.isEmpty()}">
+            <span class="error">登録されたTODOはありません。</span>
+        </th:block>
+    </section>
+        <th:block th:if="${debug}">
+        <center>
+            <form onsubmit="return check();" th:action="@{/clear}" th:method="delete">
+                <input class="delete_btn" type="submit" value="全削除" />
+            </form>
+        </center>
+        </th:block>
+    </main>
+    <script>
+    function check() {
+      if (window.confirm('全てのデータが削除されますがよろしいですか？')) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    </script>
+</body>
+</html>

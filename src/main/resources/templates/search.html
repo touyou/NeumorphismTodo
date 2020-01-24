@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo | Search</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:100,300,400,500,700,900&display=swap&subset=japanese" rel="stylesheet">
+    <link href="ress.css" rel="stylesheet" type="text/css">
+    <link href="common.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<header>
+    <h1><a href="/">TODOリスト</a></h1>
+</header>
+<main>
+<section>
+    <div class="input_card">
+        <div class="content">
+            <form class="search_form" method="put" th:object="${searchForm}">
+                <input class="text_field" th:field="*{word}" type="text" />
+                <input class="submit_btn" type="submit" value="検索" />
+            </form>
+        </div>
+    </div>
+</section>
+<section>
+    <th:block th:unless="${list.isEmpty()}">
+        <span class="error" th:unless="${word == null}">Todoが[[${list.size()}]]件見つかりました。</span>
+        <div class="card" th:each="todo : ${list}">
+            <h1 th:utext="${todo.name}"></h1>
+            <ul>
+                <li><small>期限</small> [[${formatter.format(todo.deadlineDate)}]]</li>
+                <li><small>作成日</small> [[${formatter.format(todo.createDate)}]]</li>
+            </ul>
+            <div class="card_btns">
+                <button th:onclick="|window.location.href='@{/edit/{id}(id=${todo.id})}'|">編集</button>
+                <form th:action="@{/search/done/{id}?word={word}(id=${todo.id},word=${word})}" th:method="put">
+                    <input th:class="${todo.done} ? 'done' : 'undone'" th:value="${todo.done} ? '完了' : '未完了'" type="submit" />
+                </form>
+            </div>
+        </div>
+    </th:block>
+    <th:block th:if="${list.isEmpty()}">
+        <span class="error" th:unless="${word == null}">対象のTodoは見つかりません。</span>
+    </th:block>
+</section>
+</main>
+</body>
+</html>

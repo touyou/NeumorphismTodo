@@ -30,3 +30,12 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### MySQL log ###
+log/mysql/mysqld.log
+
+### AWS Script ###
+aws_run.sh
+
+### Admin info ###
+**/todo.properties

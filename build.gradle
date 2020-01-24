@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.2.3.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
+	id 'com.palantir.docker' version '0.24.0'
+	id "com.avast.gradle.docker-compose" version "0.10.7"
 }
 
 group = 'com.teamlab.fujiiyosuke'
@@ -28,8 +30,16 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	compileOnly "org.projectlombok:lombok:1.18.10"
+	annotationProcessor "org.projectlombok:lombok:1.18.10"
 }
 
 test {
 	useJUnitPlatform()
+}
+
+docker {
+	name "touyou/springtodo"
+	files bootJar.archivePath
+	buildArgs(['JAR_TARGET': "${bootJar.archiveName}"])
 }

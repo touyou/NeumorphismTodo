@@ -1,4 +1,4 @@
-package com.teamlab.fujiiyosuke.Todo;
+package com.teamlab.fujiiyosuke.todoApp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

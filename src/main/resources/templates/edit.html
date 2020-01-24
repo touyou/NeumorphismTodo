@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo | Edit</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:100,300,400,500,700,900&display=swap&subset=japanese" rel="stylesheet">
+    <link href="/ress.css" rel="stylesheet" type="text/css">
+    <link href="/common.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<header>
+    <h1><a href="/">TODOリスト</a></h1>
+    <p><a href="/search">検索</a></p>
+</header>
+<main>
+    <div class="input_card">
+        <h1>Todoの編集</h1>
+        <div class="content">
+            <form th:action="@{/edit/{id}(id=${id})}" th:method="put" th:object="${todoForm}">
+                <ul>
+                    <li th:each="e : ${validationError}" th:text="${e.defaultMessage}" />
+                </ul>
+                <p><label>TODO名</label><input class="text_field" placeholder="30文字以内で入力してください。" th:field="*{name}" type="text" /></p>
+                <p><label>期限</label><input class="text_field" placeholder="2020-01-01" th:field="*{deadline}" type="date" /></p>
+                <input class="submit_btn" type="submit" value="更新" />
+            </form>
+        </div>
+    </div>
+    <center>
+    <form onsubmit="return check();" th:action="@{/delete/{id}(id=${id})}" th:method="delete">
+        <input class="delete_btn" type="submit" value="削除" />
+    </form>
+    </center>
+</main>
+<script>
+    function check() {
+      if (window.confirm('このTODOを削除しますか？')) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+</script>
+</body>
+</html>
