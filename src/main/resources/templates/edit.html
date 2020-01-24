@@ -26,6 +26,20 @@
             </form>
         </div>
     </div>
+    <center>
+    <form onsubmit="return check();" th:action="@{/delete/{id}(id=${id})}" th:method="delete">
+        <input class="delete_btn" type="submit" value="削除" />
+    </form>
+    </center>
 </main>
+<script>
+    function check() {
+      if (window.confirm('このTODOを削除しますか？')) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+</script>
 </body>
 </html>

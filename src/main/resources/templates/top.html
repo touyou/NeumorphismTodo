@@ -48,6 +48,22 @@
             <span class="error">登録されたTODOはありません。</span>
         </th:block>
     </section>
+        <th:block th:if="${debug}">
+        <center>
+            <form onsubmit="return check();" th:action="@{/clear}" th:method="delete">
+                <input class="delete_btn" type="submit" value="全削除" />
+            </form>
+        </center>
+        </th:block>
     </main>
+    <script>
+    function check() {
+      if (window.confirm('全てのデータが削除されますがよろしいですか？')) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    </script>
 </body>
 </html>

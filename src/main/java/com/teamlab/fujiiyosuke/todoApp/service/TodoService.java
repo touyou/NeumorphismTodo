@@ -10,10 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.util.HtmlUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Todoのサービスクラス
@@ -151,6 +148,16 @@ public class TodoService {
      */
     public void deleteAll() {
         todoRepository.deleteAll();
+    }
+
+    /**
+     * check it is debug mode
+     * @param adminPass admin pass
+     * @return debug mode or not
+     */
+    public boolean isDebugMode(String adminPass) {
+        ResourceBundle rb = ResourceBundle.getBundle("todo");
+        return adminPass != null ? adminPass.equals(rb.getString("adminPass")) : false;
     }
 
     /**

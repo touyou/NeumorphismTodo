@@ -34,5 +34,8 @@ out/
 ### MySQL log ###
 log/mysql/mysqld.log
 
-### AWS Config ###
+### AWS Script ###
 aws_run.sh
+
+### Admin info ###
+**/todo.properties
