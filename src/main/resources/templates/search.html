@@ -33,7 +33,7 @@
             </ul>
             <div class="card_btns">
                 <button th:onclick="|window.location.href='@{/edit/{id}(id=${todo.id})}'|">編集</button>
-                <form action="#" th:action="@{/done/{id}(id=${todo.id})}" th:method="put">
+                <form action="#" th:action="@{/search/done/{id}(id=${todo.id})}" th:method="put">
                     <input th:class="${todo.done} ? 'done' : 'undone'" th:value="${todo.done} ? '完了' : '未完了'" type="submit" />
                 </form>
             </div>
