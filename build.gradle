@@ -6,6 +6,8 @@ plugins {
 	id "com.avast.gradle.docker-compose" version "0.10.7"
 }
 
+apply plugin: 'war'
+
 group = 'com.teamlab.fujiiyosuke'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '13'
@@ -15,6 +17,7 @@ configurations {
 	runtimeClasspath {
 		extendsFrom developmentOnly
 	}
+	providedRuntime
 }
 
 repositories {
@@ -32,6 +35,7 @@ dependencies {
 	}
 	compileOnly "org.projectlombok:lombok:1.18.10"
 	annotationProcessor "org.projectlombok:lombok:1.18.10"
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }
 
 test {
